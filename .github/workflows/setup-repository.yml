@@ -24,7 +24,6 @@ jobs:
             -H "Accept: application/vnd.github.baptiste-preview+json" \
             https://api.github.com/repos/$GITHUB_REPOSITORY \
             | jq --exit-status '.is_template == false';
-
       - uses: actions/checkout@v2
         with:
           # Comminting workflow files using the regular GITHUB_TOKEN will fail with
@@ -61,7 +60,6 @@ jobs:
           ! -name 'cookiecutter-temp' \
           ! -name '.' \
           ! -exec rm -rf {} +
-
       - name: Move files to root
         shell: bash
         # The cookiecutter-temp/ folder contains a single folder which is the
@@ -70,7 +68,6 @@ jobs:
         run: |
           rsync -r ./cookiecutter-temp/*/ . && \
           rm -rf ./cookiecutter-temp/
-
       - name: Reinitialize git repository
         shell: bash
         # Reinitialize git after scaffolding this repository.
@@ -83,7 +80,6 @@ jobs:
           git add . && \
           git commit -m 'Initial commit' && \
           git push origin temp-branch:main -f
-
       - name: Remove secret REPO_SETUP_TOKEN
         # After re-initializing the repository, we can remove the `REPO_SETUP_TOKEN` secret.
         shell: bash
